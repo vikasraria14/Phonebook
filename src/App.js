@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState , useEffect} from 'react'
+import Filter from './Filter'
+import PersonForm from './PersonForm'
+import Persons from './Persons'
+import database from './Backend'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => {
+  const [persons, setPersons] = useState([])
+
+
+ 
+  const [namesToShow, setNamesToShow]=useState([])
+  const [searchKeys,setSearchKeys]=useState('')
+
+
+  useEffect(()=>{
+    
+     database.getAll()
+     .then(response=>{
+       console.log(response);
+       setPersons(response)
+       setNamesToShow(response)
+     })
+    
+    
+  },[])
+  
+  
+//console.log(persons)
+  
+
+  const handleSearchKeys=(event)=>
+  {
+  //  console.log(event.target.value);
+    let searchString=event.target.value;
+    setSearchKeys(searchString)
+
+    setNamesToShow(persons.filter(person=>person.name.toLowerCase().includes(searchString.toLowerCase())))
+  }
+ 
+  return(
+    <div>
+      <h1>My Phonebook</h1>
+      <Filter searchKeys={searchKeys} handleSearchKeys={handleSearchKeys} />
+      <h2>Add a new</h2>
+      <PersonForm persons={persons}  setPersons={setPersons} setNamesToShow={setNamesToShow} />
+      <h2>Numbers</h2>
+      
+      {namesToShow.map(person=><Persons key={person.id} person={person}/>)}
     </div>
-  );
+  )
+  
 }
 
-export default App;
+export default App
