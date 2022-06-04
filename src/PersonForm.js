@@ -30,7 +30,23 @@ const PersonForm=({persons,setPersons,setNamesToShow})=>
    // console.log(x)
     if(x!==-1)
     {
-      alert(`${newNameObj.name} is already added to the phonebook`)
+      console.log(x)
+      
+     
+      const z=window.confirm(`Do you want to edit ${newNameObj.name}`)
+      if(z)
+      {
+        const per=persons.find(person=>{return person.name===newNameObj.name});
+        database.update(per.id,newNameObj)
+        .then(
+          database.getAll()
+          .then(response=>{
+      // console.log(response);
+          setPersons(response)
+          setNamesToShow(response)
+          })
+        )
+      }
     }
     else
     {

@@ -11,6 +11,7 @@ const App = () => {
  
   const [namesToShow, setNamesToShow]=useState([])
   const [searchKeys,setSearchKeys]=useState('')
+  //const [error,setError]=useState('')
 
 
   useEffect(()=>{
@@ -46,7 +47,7 @@ const App = () => {
       <PersonForm persons={persons}  setPersons={setPersons} setNamesToShow={setNamesToShow} />
       <h2>Numbers</h2>
       
-      {namesToShow.map(person=><Persons key={person.id} person={person}/>)}
+      {namesToShow.map(person=><Persons key={person.id} person={person} setPersons={setPersons} setNamesToShow={setNamesToShow}/>)}
     </div>
   )
   
